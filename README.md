@@ -5,29 +5,20 @@
 
 <ul>
 <li>
-clone in your computer: 
-
+clone in your computer:<br> 
 <code> 
-mvn clean test 
-git clone your_repo_url
-cd your_repo_dir
+mvn clean test <br>
+git clone your_repo_url<br>
+cd your_repo_dir<br>
 </code>
-
-
-
 
 </li>
 
 <li>
-run tests from terminal:  
-   <code> mvn clean test </code>
-</li>
-
-<li>
-push your change to the repository: 
-<code>
-    git add . 
-    git commit -m "commit message"
-    git push
+run tests from terminal: <br>  
+<code> 
+mvn clean test<br>
+./run.sh<br>
 </code>
 </li>
+</ul>
