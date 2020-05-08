@@ -1,18 +1,17 @@
 package ir.ac.kntu;
 
-import java.util.*;
+import java.util.Scanner;
 
-public class Main {
+public class Administrator implements WorkingUser {
     private static Hospital hospital;
     private static Scanner scanner;
-    public static void main(String[] args) {
+    @Override
+    public void startWorkLoop(Hospital myHospital) {
+        hospital = myHospital;
         clearScreen();
         scanner = new Scanner(System.in);
-        try{
-            hospital = firstSet();
+        try {
             firstMenu();
-        } catch (Exception e) {
-            System.out.println("Something was wrong!  :) run again");
         } finally {
             scanner.close();
         }
@@ -429,34 +428,4 @@ public class Main {
         }
         return false;
     }
-}
-
-enum ChooseRoom {
-    MID_FULL, EMPTY
-}
-
-enum FirstMenuChoose {
-    FEATURE, STATUS, SEARCH, EXIT
-}
-
-enum FeatureMenuChoose {
-    PATIENT_INFO, EMPLOYEE_INFO, /*PART,*/ ROOM, FIRST_MENU, EXIT
-}
-
-enum PatientFeatures {
-    ADD_PATIENT, EDIT_PATIENT, DISCHARGE, PRINT_ALL, FEATURE_MENU, EXIT
-}
-
-enum RoomFeature {
-    SET, S_E_R, PRINT_ALL, BACK, EXIT
-}
-
-enum SearchMenuChoose {
-    /*EMPTY_ROOM, S_ROOM,*/ UNAVAILABLE_ROOM, D_N_OF_SHIFT,/* NURSES_OF_SHIFT,
-    NURSES_OF_PATIENT,*/ FIRST_MENU, EXIT
-}
-
-enum StatusMenuChoose {
-    PATIENTS_OF_PART, PATIENTS_OF_DOCTOR, INCOME,
-    PATIENTS_OF_HOSPITAL, SHIFTS_OF_PART, FIRST_MENU, EXIT
 }

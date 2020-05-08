@@ -83,6 +83,9 @@ public class Hospital {
         System.out.println("press Enter to go back to previous Menu...");
         scanner.nextLine();
     }
+    public ArrayList<Doctor> getDoctors() {
+        return new ArrayList<>(doctors);
+    }
     public Nurse addNurse(int id, Scanner scanner) {
         Nurse n = null;
         System.out.print("Enter name of Nurse : ");
