@@ -3,17 +3,18 @@ package ir.ac.kntu;
 import java.util.*;
 
 public class Main {
-    private static Hospital hospital = null;
+    private static Hospital hospital;
+    private static Scanner scanner;
 
     public static void main(String[] args) {
         clearScreen();
-        Hospital h = firstSet();
-        hospital = h;
+        scanner = new Scanner(System.in);
+        hospital = firstSet();
         firstMenu();
+        scanner.close();
     }
 
     public static void firstMenu() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("            Menu\n" +
                 "--------------------------------\n" +
                 "1.Features And Performance menu\n" +
@@ -22,7 +23,6 @@ public class Main {
                 "4.exit\n" +
                 "Enter the number of choose : ");
         int choose = scanner.nextInt() - 1;
-
         FirstMenuChoose[] first = FirstMenuChoose.values();
         clearScreen();
         if (choose >= 0 && choose < first.length) {
@@ -47,16 +47,13 @@ public class Main {
             System.out.println("Wrong Input! try Again...");
             firstMenu();
         }
-
     }
 
     public static void featureMenu() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("            Features-Menu\n" +
                 "----------------------------------------------\n" +
                 "1.set, edit, see and discharge Patient\n" +
                 "2.set, edit, see and remove Employee\n" +
-                /*"3.set, edit, see and remove Part\n" +*/
                 "3.set, edit, see and remove Room\n" +
                 "4.go back to First-Menu\n" +
                 "5.exit\n" +
@@ -72,8 +69,6 @@ public class Main {
                 case EMPLOYEE_INFO:
                     employeeFeatures();
                     break;
-                /*case PART:
-                    break;*/
                 case ROOM:
                     roomFeatures();
                     break;
@@ -93,7 +88,6 @@ public class Main {
     }
 
     public static void patientFeatures() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("Set, Edit or DisCharge a Patient\n" +
                 "***************************************\n" +
                 "1.Add new Patient\n" +
@@ -154,12 +148,10 @@ public class Main {
         } else {
             System.out.println("Wrong Input! Try Again...");
         }
-
         patientFeatures();
     }
 
     public static int employeeFeaturesMenu() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("Set, edit, see or remove an Employee\n" +
                 "************************************\n" +
                 "1.Set New Doctor\n" +
@@ -172,13 +164,11 @@ public class Main {
                 "8.exit\n" +
                 "Enter the number of choose : ");
         int choose = scanner.nextInt();
-
         clearScreen();
         return choose;
     }
 
     public static void employeeFeatures() {
-        Scanner scanner = new Scanner(System.in);
         switch (employeeFeaturesMenu()) {
             case 1:
                 hospital.addOrEditDoctor(0);
@@ -236,12 +226,10 @@ public class Main {
                 System.out.println("Wrong Input! Try Again...\n");
                 break;
         }
-
         employeeFeatures();
     }
 
     public static int roomFeaturesMenu() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("set, edit, see and remove Room\n" +
                 "**********************************\n" +
                 "1.Set new Room\n" +
@@ -251,13 +239,11 @@ public class Main {
                 "5.exit\n" +
                 "Enter the number of choose : ");
         int choose = scanner.nextInt() - 1;
-
         clearScreen();
         return choose;
     }
 
     public static void roomFeatures() {
-        Scanner scanner = new Scanner(System.in);
         int choose = roomFeaturesMenu();
         RoomFeature[] r = RoomFeature.values();
         if (choose >= 0 && choose < r.length) {
@@ -267,7 +253,6 @@ public class Main {
                     roomFeatures();
                     break;
                 case S_E_R:
-                    scanner = new Scanner(System.in);
                     Room room = hospital.getRoom();
                     System.out.println(room.getRoomInfo());
                     System.out.println("Enter Choose (1(back), 2(edit), 3(set un/Available)) : ");
@@ -304,14 +289,12 @@ public class Main {
                     break;
                 case EXIT:
                     System.exit(0);
-                    ;
                 default:
                     break;
             }
         } else {
             System.out.println("Wrong Input! Try Again...");
         }
-
         roomFeatures();
     }
 
@@ -322,10 +305,8 @@ public class Main {
                 System.out.println(n.getInfo() + "\n");
             }
         }
-        Scanner scanner = new Scanner(System.in);
         System.out.println("press Enter to go back to previous Menu...");
         scanner.nextLine();
-
     }
 
     public static void printAllPatients() {
@@ -335,10 +316,8 @@ public class Main {
                 System.out.println(p.getInfo());
             }
         }
-        Scanner scanner = new Scanner(System.in);
         System.out.println("press Enter to go back to previous Menu...");
         scanner.nextLine();
-
     }
 
     public static void printAllRooms() {
@@ -350,14 +329,11 @@ public class Main {
         for (Room r : hospital.getEmergencyRooms()) {
             System.out.println(r.getRoomInfo());
         }
-        Scanner scanner = new Scanner(System.in);
         System.out.println("press Enter to go back to previous Menu...");
         scanner.nextLine();
-
     }
 
     public static void statusMenu() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("            Status-Menu\n" +
                 "--------------------------------------------------------\n" +
                 "1.see Patients of a Part\n" +
@@ -397,7 +373,6 @@ public class Main {
                     break;
                 case EXIT:
                     System.exit(0);
-                    ;
                 default:
                     System.out.println("Wrong Input! try Again...");
                     break;
@@ -405,20 +380,14 @@ public class Main {
         } else {
             System.out.println("Wrong Input! try Again...");
         }
-
         statusMenu();
     }
 
     public static void searchMenu() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("            Search-Menu\n" +
                 "--------------------------------------------------------------\n" +
-                /*"1.Search Empty Room in a Specified Interval\n" +
-                "2.Search Room in a Specified Interval Based on Its Free Beds\n" +*/
                 "1.unAvailable Rooms\n" +
                 "2.Search Doctor, Nurse or Both in a Specified Shift\n" +
-                /*"5.Search Nurses with shift of a Specified Doctor\n" +
-                "6.Search Nurses that was in hospital while a patient was there(with NationalId or id)\n" +*/
                 "3.go back to the First-Menu\n" +
                 "4.exit\n" +
                 "Enter the number of choose : ");
@@ -427,38 +396,27 @@ public class Main {
         clearScreen();
         if (choose >= 0 && choose < s.length) {
             switch (s[choose]) {
-                /*case EMPTY_ROOM:
-                    break;
-                case S_ROOM:
-                    break;*/
                 case UNAVAILABLE_ROOM:
                     hospital.printUnAvailableRooms();
                     break;
                 case D_N_OF_SHIFT:
                     hospital.printEmployeeOfShift();
                     break;
-                /*case NURSES_OF_SHIFT:
-                    break;
-                case NURSES_OF_PATIENT:
-                    break;*/
                 case FIRST_MENU:
                     firstMenu();
                     break;
                 case EXIT:
                     System.exit(0);
-                    ;
                 default:
                     break;
             }
         } else {
             System.out.println("Wrong Input! try Again...");
         }
-
         searchMenu();
     }
 
     public static Hospital firstSet() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("Enter name of the Hospital : ");
         String hospitalName = scanner.nextLine();
         System.out.print("Enter Address  of the Hospital : ");
@@ -466,7 +424,6 @@ public class Main {
         System.out.print("Enter the Cost of a FirstBed room for a night : ");
         int firstBedCost = scanner.nextInt();
         System.out.print("Hospital is set :)");
-        scanner = new Scanner(System.in);
         System.out.print("\npress enter to continue....");
         scanner.nextLine();
         clearScreen();

@@ -23,11 +23,18 @@ public class Doctor {
 
     public void editDoctor(String name, ArrayList<Shift> shifts) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter max Patient number  : ");
-        int n = scanner.nextInt();
-        this.name = name;
-        shiftsCopy(shifts);
-        maxPatientsNumber = n;
+        try {
+            System.out.print("Enter max Patient number  : ");
+            int n = scanner.nextInt();
+            this.name = name;
+            shiftsCopy(shifts);
+            maxPatientsNumber = n;
+        } finally {
+            if(scanner != null) {
+                scanner.close();
+            }
+        }
+        
     }
 
     public void setDeleted() {

@@ -44,59 +44,64 @@ public class Patient {
 
     public void editPatient() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter Name : ");
-        this.name = scanner.nextLine();
-        System.out.print("Enter National ID : ");
-        this.nationalID = scanner.nextInt();
-        System.out.print("Enter Age : ");
-        this.age = scanner.nextInt();
-        System.out.print("Enter Illness Type (1(Burn), 2(Impact), 3(Accident), 4(Other)) : ");
-        IllnessType[] i = IllnessType.values();
-        int choose = scanner.nextInt() - 1;
-        if (choose >= 0 && choose < i.length) {
-            this.illnessType = i[choose];
-        } else {
-            Main.clearScreen();
-            System.out.println("Wrong Input! Try Again...");
-            editPatient();
-        }
-        System.out.print("Enter Human Kind (1(Male), 2(Female)) : ");
-        HumanKind[] h = HumanKind.values();
-        choose = scanner.nextInt() - 1;
-        if (choose >= 0 && choose < h.length) {
-            this.humanKind = h[choose];
-        } else {
-            Main.clearScreen();
-            System.out.println("Wrong Input! Try Again...");
-            editPatient();
-        }
-        System.out.print("Enter Insurance Type (1(Tamin-Ejtemaei), 2(Niro-haye-Mosallah), 3(Khadamat-Darmani)) : ");
-        Insurance[] insurances = Insurance.values();
-        choose = scanner.nextInt() - 1;
-        if (choose >= 0 && choose < i.length) {
-            this.insurance = insurances[choose];
-        } else {
-            Main.clearScreen();
-            System.out.println("Wrong Input! Try Again...");
-            editPatient();
-        }
-        System.out.print("Enter Date of Hospitalization (1 for now, 2 for manual set) : ");
-        choose = scanner.nextInt();
-        if (choose == 1) {
-            this.hospitalizationDate = LocalDate.now();
-        } else if (choose == 2) {
-            this.hospitalizationDate = setDate();
-            if (hospitalizationDate == null) {
+        try {
+            System.out.print("Enter Name : ");
+            this.name = scanner.nextLine();
+            System.out.print("Enter National ID : ");
+            this.nationalID = scanner.nextInt();
+            System.out.print("Enter Age : ");
+            this.age = scanner.nextInt();
+            System.out.print("Enter Illness Type (1(Burn), 2(Impact), 3(Accident), 4(Other)) : ");
+            IllnessType[] i = IllnessType.values();
+            int choose = scanner.nextInt() - 1;
+            if (choose >= 0 && choose < i.length) {
+                this.illnessType = i[choose];
+            } else {
                 Main.clearScreen();
                 System.out.println("Wrong Input! Try Again...");
                 editPatient();
             }
-        } else {
-            Main.clearScreen();
-            System.out.println("Wrong Input! Try Again...");
-            editPatient();
+            System.out.print("Enter Human Kind (1(Male), 2(Female)) : ");
+            HumanKind[] h = HumanKind.values();
+            choose = scanner.nextInt() - 1;
+            if (choose >= 0 && choose < h.length) {
+                this.humanKind = h[choose];
+            } else {
+                Main.clearScreen();
+                System.out.println("Wrong Input! Try Again...");
+                editPatient();
+            }
+            System.out.print("Enter Insurance Type (1(Tamin-Ejtemaei), 2(Niro-haye-Mosallah), 3(Khadamat-Darmani)) : ");
+            Insurance[] insurances = Insurance.values();
+            choose = scanner.nextInt() - 1;
+            if (choose >= 0 && choose < i.length) {
+                this.insurance = insurances[choose];
+            } else {
+                Main.clearScreen();
+                System.out.println("Wrong Input! Try Again...");
+                editPatient();
+            }
+            System.out.print("Enter Date of Hospitalization (1 for now, 2 for manual set) : ");
+            choose = scanner.nextInt();
+            if (choose == 1) {
+                this.hospitalizationDate = LocalDate.now();
+            } else if (choose == 2) {
+                this.hospitalizationDate = setDate();
+                if (hospitalizationDate == null) {
+                    Main.clearScreen();
+                    System.out.println("Wrong Input! Try Again...");
+                    editPatient();
+                }
+            } else {
+                Main.clearScreen();
+                System.out.println("Wrong Input! Try Again...");
+                editPatient();
+            }
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
         }
-
     }
 
     public int getDoctorID() {
@@ -166,17 +171,24 @@ public class Patient {
 
     public LocalDate setDate() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter Date (Like this (2020 2 1)) : ");
-        int year = scanner.nextInt();
-        int month = scanner.nextInt();
-        int day = scanner.nextInt();
-        if (Main.checkDate(year, month, day)) {
-            return LocalDate.of(year, month, day);
-        } else {
-            System.out.println("Wrong Arguments");
+        try {
+            System.out.print("Enter Date (Like this (2020 2 1)) : ");
+            int year = scanner.nextInt();
+            int month = scanner.nextInt();
+            int day = scanner.nextInt();
+            if (Main.checkDate(year, month, day)) {
+                return LocalDate.of(year, month, day);
+            } else {
+                System.out.println("Wrong Arguments");
+            }
+            return null;
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
         }
 
-        return null;
+
     }
 
     public String getBill() {

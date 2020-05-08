@@ -1,10 +1,8 @@
 package ir.ac.kntu;
-
 import java.time.LocalDate;
 import java.util.*;
-
 public class Hospital {
-    private static Scanner scanner = null;
+    private static Scanner scanner = new Scanner(System.in);
     private String name;
     private String address;
     private int firstBedCost;
@@ -18,16 +16,13 @@ public class Hospital {
     private int doctorIDs = 111;
     private int nurseIDs = 111;
     private double income = 0;
-
     public Hospital(String name, String address, int firstBedCost) {
         this.name = name;
         this.address = address;
         this.firstBedCost = firstBedCost;
     }
-
     public Doctor addOrEditDoctor(int id) {
         Doctor d;
-        scanner = new Scanner(System.in);
         System.out.print("Enter name of Doctor : ");
         String name = scanner.nextLine();
         int part = 0;
@@ -60,7 +55,6 @@ public class Hospital {
         autoSet(d.getPartId());
         return d;
     }
-
     public Doctor getDoctorWithID(int id) {
         for (Doctor d : doctors) {
             if (d.getId() == id) {
@@ -69,7 +63,6 @@ public class Hospital {
         }
         return null;
     }
-
     public void deleteDoctor(Doctor d) {
         d.setDeleted();
         d.clearNurses();
@@ -81,7 +74,6 @@ public class Hospital {
         autoSet(d.getPartId());
         System.out.println("Doctor with ID : " + d.getId() + " Successfully Deleted!\n");
     }
-
     public void printAllDoctors() {
         Main.clearScreen();
         for (Doctor d : doctors) {
@@ -89,19 +81,15 @@ public class Hospital {
                 System.out.println(d.getInfo() + "\n");
             }
         }
-        scanner = new Scanner(System.in);
         System.out.println("press Enter to go back to previous Menu...");
         scanner.nextLine();
     }
-
     public Nurse addNurse(int id) {
         Nurse n = null;
-        scanner = new Scanner(System.in);
         System.out.print("Enter name of Nurse : ");
         String name = scanner.nextLine();
         System.out.print("which Part (1(Ordinary), 2(Emergency)) : ");
         int part = scanner.nextInt();
-
         if (id == 0) {
             if (part == 1) {
                 n = new Nurse(name, nurseIDs++, 1);
@@ -118,7 +106,6 @@ public class Hospital {
         autoSet(part);
         return n;
     }
-
     public Nurse getNurseWithID(int id) {
         for (Nurse n : nurses) {
             if (n.getId() == id) {
@@ -127,7 +114,6 @@ public class Hospital {
         }
         return null;
     }
-
     public void deleteNurse(Nurse n) {
         n.setDeleted();
         n.clearDoctors();
@@ -139,18 +125,14 @@ public class Hospital {
         autoSet(n.getPartId());
         System.out.println("Nurse with ID : " + n.getId() + " Successfully Deleted!\n");
     }
-
     public ArrayList<Nurse> getNurses() {
         return new ArrayList<>(nurses);
     }
-
     public void printEmployeeOfShift() {
-        scanner = new Scanner(System.in);
         System.out.print("Enter Shift like this ( 1 1 for (day 1 - shift 1)) : ");
         Shift shift = new Shift(scanner.nextInt(), scanner.nextInt());
         System.out.print("Doctors(1) Nurses(2) Both(3) : ");
         int choose = scanner.nextInt();
-
         if (choose == 1 || choose == 3) {
             System.out.println("<< Doctors >>");
             for (Doctor d : doctors) {
@@ -170,13 +152,10 @@ public class Hospital {
             System.out.println();
         }
     }
-
     public ArrayList<Patient> getPatients() {
         return new ArrayList<>(patients);
     }
-
     public HospitalizationOrder addAndGetNewOrder() {
-        scanner = new Scanner(System.in);
         System.out.print("Enter name of Patient : ");
         String name = scanner.nextLine();
         System.out.print("Enter Part to Be Hospitalized (1(Emergency), 2(Ordinary)) : ");
@@ -198,7 +177,6 @@ public class Hospital {
         IllnessType illnessType = IllnessType.OTHER;
         IllnessType[] i = IllnessType.values();
         choose = scanner.nextInt() - 1;
-
         if (choose >= 0 && choose < i.length) {
             illnessType = i[choose];
         } else {
@@ -212,9 +190,7 @@ public class Hospital {
         orders.add(order);
         return order;
     }
-
     public Patient addAndGetPatient(HospitalizationOrder order) {
-        scanner = new Scanner(System.in);
         System.out.print("Enter National ID number : ");
         int nationalID = scanner.nextInt();
         if (getPatient(nationalID) != null && !getPatient(nationalID).isDisCharged()) {
@@ -246,7 +222,6 @@ public class Hospital {
         ChooseRoom chooseRoom = ChooseRoom.MIDFULL;
         ChooseRoom[] c = ChooseRoom.values();
         choose = scanner.nextInt() - 1;
-
         if (choose >= 0 && choose < c.length) {
             chooseRoom = c[choose];
         } else {
@@ -277,7 +252,6 @@ public class Hospital {
         }
         return getPatient(nationalID);
     }
-
     public void removePatient(Patient patient) {
         patient.setDisCharged();
         System.out.print(patient.getBill());
@@ -295,12 +269,9 @@ public class Hospital {
         }
         System.out.print("\nPatient Successfully DisCharged\n");
     }
-
     public void printPartPatients() {
-        scanner = new Scanner(System.in);
         System.out.print("Part (1(Ordinary), 2(Emergency)) : ");
         int i = scanner.nextInt();
-
         if (i == 1) {
             System.out.println("<< Ordinary >>");
             for (Patient p : ordinary.getPatients()) {
@@ -314,11 +285,8 @@ public class Hospital {
         } else {
             return;
         }
-
     }
-
     public void printPatientsOfDr() {
-        scanner = new Scanner(System.in);
         System.out.print("Enter Doctor's Id :");
         Doctor dr = getDoctorWithID(scanner.nextInt());
         if (dr != null) {
@@ -338,7 +306,6 @@ public class Hospital {
             System.out.println("No Such a Doctor exists...");
         }
     }
-
     public void printPatientsIntv() {
         ArrayList<LocalDate> dates = getInterval();
         for (Patient p : patients) {
@@ -347,14 +314,12 @@ public class Hospital {
             }
             if (p.getHospitalizationDate().compareTo(dates.get(0)) >= 0 &&
                     p.getDisChargingDate().compareTo(dates.get(1)) <= 0) {
-                System.out.println("N.ID : " + p.getNationalID() +
-                        "\nPart : " + p.getPart() + "\nRoom : " + p.getRoomID()
-                        + "\nHospitalization Interval : " + p.getHospitalizationDate() + " -> " +
+                System.out.println("N.ID : " + p.getNationalID() + "\nPart : " + p.getPart() + "\nRoom : " +
+                        p.getRoomID() + "\nHospitalization Interval : " + p.getHospitalizationDate() + " -> " +
                         p.getDisChargingDate() + "\n");
             }
         }
     }
-
     public Doctor findDoctor(PartOfHospital p) {
         ArrayList<Doctor> doctors1 = null;
         if (p == PartOfHospital.ORDINARY) {
@@ -388,7 +353,6 @@ public class Hospital {
     }
 
     public void addNewRoom() {
-        scanner = new Scanner(System.in);
         System.out.print("Enter the Part you want to add Room (1(Ordinary), 2(Emergency) :");
         int partValue = scanner.nextInt();
         System.out.print("Enter number of Beds in the Room : ");
@@ -398,18 +362,14 @@ public class Hospital {
         } else if (partValue == 2) {
             emergency.addRoom(numberOfBeds, firstBedCost);
         }
-
-
     }
 
     public Room getRoom() {
-        scanner = new Scanner(System.in);
         Room room = null;
         System.out.print("Enter Part of Hospital (1(Ordinary), 2(Emergency)) : ");
         int partValue = scanner.nextInt();
         System.out.print("Enter Room ID for See : ");
         int id = scanner.nextInt();
-
         if (partValue == 1) {
             room = ordinary.getRoom(id);
         } else if (partValue == 2) {
@@ -421,7 +381,6 @@ public class Hospital {
         if (room == null) {
             System.out.println("No Such a Room Found!");
         }
-
         return room;
     }
 
@@ -497,7 +456,6 @@ public class Hospital {
     }
 
     public static LocalDate setDate() {
-        scanner = new Scanner(System.in);
         System.out.print("Enter Date (1 for now, 2 for manual set) : ");
         int choose = scanner.nextInt();
         if (choose == 1) {
@@ -518,11 +476,9 @@ public class Hospital {
         }
         return setDate();
     }
-
     public void addToIncome(double cost) {
         income += cost;
     }
-
     public void printIncomeInterval() {
         ArrayList<LocalDate> dates = getInterval();
         double sum = 0;
@@ -534,16 +490,11 @@ public class Hospital {
         }
         System.out.println("\n" + "Hospital Income : " + sum);
     }
-
     public void printShiftsOfPart(int partId) {
         if (partId == 1) {
             ordinary.printShifts();
         } else if (partId == 2) {
             emergency.printShifts();
         }
-    }
-
-    public void addDoctor(Doctor doctor) {
-        doctors.add(doctor);
     }
 }
