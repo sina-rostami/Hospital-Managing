@@ -5,15 +5,18 @@ import java.util.*;
 public class Main {
     private static Hospital hospital;
     private static Scanner scanner;
-
     public static void main(String[] args) {
         clearScreen();
         scanner = new Scanner(System.in);
-        hospital = firstSet();
-        firstMenu();
-        scanner.close();
+        try{
+            hospital = firstSet();
+            firstMenu();
+        } catch (Exception e) {
+            System.out.println("Something is wrong!!!");
+        } finally {
+            scanner.close();
+        }
     }
-
     public static void firstMenu() {
         System.out.print("            Menu\n" +
                 "--------------------------------\n" +
@@ -100,7 +103,7 @@ public class Main {
         if (choose >= 0 && choose < p.length) {
             switch (p[choose]) {
                 case ADD_PATIENT:
-                    Patient patient = hospital.addAndGetPatient(hospital.addAndGetNewOrder());
+                    Patient patient = hospital.addAndGetPatient(hospital.addAndGetNewOrder(scanner), scanner);
                     if (patient != null) {
                         System.out.println("Patient Successfully Added With National ID : " + patient.getNationalID());
                     }
@@ -118,7 +121,7 @@ public class Main {
                         System.out.print("Enter 1(back), 2(Edit) :");
                         choose = scanner.nextInt();
                         if (choose == 2) {
-                            patient.editPatient();
+                            patient.editPatient(scanner);
                             System.out.println("Information Changed Successfully!\n");
                         }
                     } else {
@@ -129,7 +132,7 @@ public class Main {
                     System.out.print("Enter National ID of Patient : ");
                     patient = hospital.getPatient(scanner.nextInt());
                     if (patient != null) {
-                        hospital.removePatient(patient);
+                        hospital.removePatient(patient, scanner);
                     } else {
                         System.out.print("\nNo such A Patient Found\n");
                     }
@@ -171,10 +174,10 @@ public class Main {
     public static void employeeFeatures() {
         switch (employeeFeaturesMenu()) {
             case 1:
-                hospital.addOrEditDoctor(0);
+                hospital.addOrEditDoctor(0, scanner);
                 break;
             case 2:
-                hospital.addNurse(0);
+                hospital.addNurse(0, scanner);
                 break;
             case 3:
                 System.out.print("Enter Doctor's ID : ");
@@ -185,9 +188,9 @@ public class Main {
                     System.out.print("Enter 1(edit) , 2(remove) or 3(back) : ");
                     int choose1 = scanner.nextInt();
                     if (choose1 == 1) {
-                        hospital.addOrEditDoctor(id);
+                        hospital.addOrEditDoctor(id, scanner);
                     } else if (choose1 == 2) {
-                        hospital.deleteDoctor(doctor);
+                        hospital.deleteDoctor(doctor, scanner);
                     }
                 } else {
                     System.out.println("No Such a Doctor Found :(\n");
@@ -202,16 +205,16 @@ public class Main {
                     System.out.print("Enter 1(edit) , 2(remove) or 3(back) : ");
                     int choose1 = scanner.nextInt();
                     if (choose1 == 1) {
-                        nurse.editNurse();
+                        nurse.editNurse(scanner);
                     } else if (choose1 == 2) {
-                        hospital.deleteNurse(nurse);
+                        hospital.deleteNurse(nurse, scanner);
                     }
                 } else {
                     System.out.println("No Such a Nurse  Found :(\n");
                 }
                 break;
             case 5:
-                hospital.printAllDoctors();
+                hospital.printAllDoctors(scanner);
                 break;
             case 6:
                 printAllNurses();
@@ -221,7 +224,6 @@ public class Main {
                 break;
             case 8:
                 System.exit(0);
-                ;
             default:
                 System.out.println("Wrong Input! Try Again...\n");
                 break;
@@ -249,11 +251,11 @@ public class Main {
         if (choose >= 0 && choose < r.length) {
             switch (r[choose]) {
                 case SET:
-                    hospital.addNewRoom();
+                    hospital.addNewRoom(scanner);
                     roomFeatures();
                     break;
                 case S_E_R:
-                    Room room = hospital.getRoom();
+                    Room room = hospital.getRoom(scanner);
                     System.out.println(room.getRoomInfo());
                     System.out.println("Enter Choose (1(back), 2(edit), 3(set un/Available)) : ");
                     choose = scanner.nextInt();
@@ -350,16 +352,16 @@ public class Main {
         if (choose >= 0 && choose < s.length) {
             switch (s[choose]) {
                 case PATIENTS_OF_PART:
-                    hospital.printPartPatients();
+                    hospital.printPartPatients(scanner);
                     break;
                 case PATIENTS_OF_DOCTOR:
-                    hospital.printPatientsOfDr();
+                    hospital.printPatientsOfDr(scanner);
                     break;
                 case INCOME:
-                    hospital.printIncomeInterval();
+                    hospital.printIncomeInterval(scanner);
                     break;
                 case PATIENTS_OF_HOSPITAL:
-                    hospital.printPatientsIntv();
+                    hospital.printPatientsIntv(scanner);
                     break;
                 case SHIFTS_OF_PART:
                     System.out.print("which part (1(Ordinary), 2(Emergency)) : ");
@@ -400,7 +402,7 @@ public class Main {
                     hospital.printUnAvailableRooms();
                     break;
                 case D_N_OF_SHIFT:
-                    hospital.printEmployeeOfShift();
+                    hospital.printEmployeeOfShift(scanner);
                     break;
                 case FIRST_MENU:
                     firstMenu();
@@ -418,9 +420,9 @@ public class Main {
 
     public static Hospital firstSet() {
         System.out.print("Enter name of the Hospital : ");
-        String hospitalName = scanner.nextLine();
+        String hospitalName = scanner.next();
         System.out.print("Enter Address  of the Hospital : ");
-        String hospitalAddress = scanner.nextLine();
+        String hospitalAddress = scanner.next();
         System.out.print("Enter the Cost of a FirstBed room for a night : ");
         int firstBedCost = scanner.nextInt();
         System.out.print("Hospital is set :)");
@@ -437,40 +439,38 @@ public class Main {
 
     public static Boolean checkDate(int year, int month, int day) {
         if (year > 0 && month > 0 && day > 0) {
-            if (month < 13 && day < 32) {
-                return true;
-            }
+            return month < 13 && day < 32;
         }
         return false;
     }
 }
 
 enum ChooseRoom {
-    MIDFULL, EMPTY;
+    MID_FULL, EMPTY
 }
 
 enum FirstMenuChoose {
-    FEATURE, STATUS, SEARCH, EXIT;
+    FEATURE, STATUS, SEARCH, EXIT
 }
 
 enum FeatureMenuChoose {
-    PATIENT_INFO, EMPLOYEE_INFO, /*PART,*/ ROOM, FIRST_MENU, EXIT;
+    PATIENT_INFO, EMPLOYEE_INFO, /*PART,*/ ROOM, FIRST_MENU, EXIT
 }
 
 enum PatientFeatures {
-    ADD_PATIENT, EDIT_PATIENT, DISCHARGE, PRINT_ALL, FEATURE_MENU, EXIT;
+    ADD_PATIENT, EDIT_PATIENT, DISCHARGE, PRINT_ALL, FEATURE_MENU, EXIT
 }
 
 enum RoomFeature {
-    SET, S_E_R, PRINT_ALL, BACK, EXIT;
+    SET, S_E_R, PRINT_ALL, BACK, EXIT
 }
 
 enum SearchMenuChoose {
     /*EMPTY_ROOM, S_ROOM,*/ UNAVAILABLE_ROOM, D_N_OF_SHIFT,/* NURSES_OF_SHIFT,
-    NURSES_OF_PATIENT,*/ FIRST_MENU, EXIT;
+    NURSES_OF_PATIENT,*/ FIRST_MENU, EXIT
 }
 
 enum StatusMenuChoose {
     PATIENTS_OF_PART, PATIENTS_OF_DOCTOR, INCOME,
-    PATIENTS_OF_HOSPITAL, SHIFTS_OF_PART, FIRST_MENU, EXIT;
+    PATIENTS_OF_HOSPITAL, SHIFTS_OF_PART, FIRST_MENU, EXIT
 }

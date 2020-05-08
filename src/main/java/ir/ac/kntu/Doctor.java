@@ -21,20 +21,12 @@ public class Doctor {
         this.partId = partId;
     }
 
-    public void editDoctor(String name, ArrayList<Shift> shifts) {
-        Scanner scanner = new Scanner(System.in);
-        try {
-            System.out.print("Enter max Patient number  : ");
-            int n = scanner.nextInt();
-            this.name = name;
-            shiftsCopy(shifts);
-            maxPatientsNumber = n;
-        } finally {
-            if(scanner != null) {
-                scanner.close();
-            }
-        }
-        
+    public void editDoctor(String name, ArrayList<Shift> shifts, Scanner scanner) {
+        System.out.print("Enter max Patient number  : ");
+        int n = scanner.nextInt();
+        this.name = name;
+        shiftsCopy(shifts);
+        maxPatientsNumber = n;
     }
 
     public void setDeleted() {

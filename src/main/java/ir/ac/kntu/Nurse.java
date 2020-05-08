@@ -9,53 +9,36 @@ public class Nurse {
     private ArrayList<Shift> shifts = new ArrayList<>();
     private Boolean isDeleted = false;
     private int partId;
-
     public Nurse(String name, int id, int partId) {
         this.name = name;
         this.id = id;
         this.partId = partId;
     }
 
-    public void editNurse() {
-        Scanner scanner = new Scanner(System.in);
-        try {
-            System.out.print("Name : ");
-            name = scanner.nextLine();
-            clearShifts();
-            for (Doctor d : doctors) {
-                shiftsCopy(this.shifts, d.getShifts());
-            }
-            setShifts();
-        } finally {
-            if (scanner != null) {
-                scanner.close();
-            }
+    public void editNurse(Scanner scanner) {
+        System.out.print("Name : ");
+        name = scanner.nextLine();
+        clearShifts();
+        for (Doctor d : doctors) {
+            shiftsCopy(this.shifts, d.getShifts());
         }
+        setShifts(scanner);
     }
 
-    public void setShifts() {
-        Scanner scanner = new Scanner(System.in);
-        try {
-            if (shifts.size() < 6) {
-                System.out.println("Enter " + (6 - shifts.size()) + " Shifts for nurse " +
-                        id + " (eg: 1 2(saturday shift 1)) :");
-                for (int i = shifts.size(); i < 6; i++) {
-                    Shift temp = new Shift(scanner.nextInt(), scanner.nextInt());
-                    if (!hasThisShift(temp.getDay(), temp.getShift())) {
-                        shifts.add(new Shift(temp.getDay(), temp.getShift()));
-                    } else {
-                        System.out.println("Has this shift");
-                        i--;
-                    }
+    public void setShifts(Scanner scanner) {
+        if (shifts.size() < 6) {
+            System.out.println("Enter " + (6 - shifts.size()) + " Shifts for nurse " +
+                    id + " (eg: 1 2(saturday shift 1)) :");
+            for (int i = shifts.size(); i < 6; i++) {
+                Shift temp = new Shift(scanner.nextInt(), scanner.nextInt());
+                if (!hasThisShift(temp.getDay(), temp.getShift())) {
+                    shifts.add(new Shift(temp.getDay(), temp.getShift()));
+                } else {
+                    System.out.println("Has this shift");
+                    i--;
                 }
             }
-        } finally {
-            if (scanner != null) {
-                scanner.close();
-            }
         }
-
-
     }
 
     public void setDoctor(Doctor doctor) {

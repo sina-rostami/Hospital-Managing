@@ -1,6 +1,5 @@
 package ir.ac.kntu;
 
-import javax.print.Doc;
 import java.util.*;
 
 public class Part {
@@ -93,7 +92,7 @@ public class Part {
         if (rooms.size() > 0) {
             Room room = rooms.get(0);
             switch (chooseRoom) {
-                case MIDFULL:
+                case MID_FULL:
                     for (int i = 1; i < rooms.size(); i++) {
                         if (rooms.get(i).getFreeSpacesNum() < room.getFreeSpacesNum() &&
                                 rooms.get(i).isAvailable()) {
