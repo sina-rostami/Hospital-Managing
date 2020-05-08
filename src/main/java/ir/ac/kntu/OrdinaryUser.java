@@ -12,12 +12,12 @@ public class OrdinaryUser implements WorkingUser{
         clearScreen();
         scanner = new Scanner(System.in);
         try {
-            Menu();
+            menu();
         } finally {
             scanner.close();
         }
     }
-    public void Menu() {
+    public void menu() {
         System.out.print("            Menu\n" +
                 "--------------------------------\n" +
                 "1.Your Information\n" +
@@ -46,12 +46,12 @@ public class OrdinaryUser implements WorkingUser{
                     System.exit(0);
                 default:
                     System.out.println("Wrong Input! try Again...");
-                    Menu();
+                    menu();
                     break;
             }
         } else {
             System.out.println("Wrong Input! try Again...");
-            Menu();
+            menu();
         }
     }
 
