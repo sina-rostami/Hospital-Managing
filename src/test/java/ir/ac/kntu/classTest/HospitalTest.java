@@ -16,7 +16,7 @@ public class HospitalTest {
         shifts.add(new Shift(1,1));
         shifts.add(new Shift(1,2));
         shifts.add(new Shift(1,3));
-        Doctor doctor = new Doctor("Doci",111,shifts, 1);
+        Doctor doctor = new Doctor("Doci",111,shifts, 1, 5);
         hospital.addDoctor(doctor);
         assertEquals(hospital.getDoctorWithID(111), doctor);
     }

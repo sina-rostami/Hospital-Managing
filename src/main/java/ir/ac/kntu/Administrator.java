@@ -408,6 +408,6 @@ enum StatusMenuChoose {
     PATIENTS_OF_PART, PATIENTS_OF_DOCTOR, INCOME,
     PATIENTS_OF_HOSPITAL, SHIFTS_OF_PART, FIRST_MENU, EXIT
 }
-enum ChooseRoom {
+public enum ChooseRoom {
     MID_FULL, EMPTY
 }
