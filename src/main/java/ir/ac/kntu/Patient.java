@@ -138,15 +138,15 @@ public class Patient {
 
     }
 
-    public void setDisCharged(Scanner scanner) {
-        LocalDate localDate = Hospital.setDate(scanner);
+    public void setDisCharged( ) {
+        LocalDate localDate = Hospital.setDate();
         if (localDate == null) {
             Main.clearScreen();
             System.out.println("Wrong Input! Try Again...");
-            this.setDisCharged(scanner);
+            this.setDisCharged();
         }
         while (localDate.compareTo(this.hospitalizationDate) < 0) {
-            localDate = Hospital.setDate(scanner);
+            localDate = Hospital.setDate();
         }
         disChargingDate = LocalDate.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth());
         isDisCharged = true;

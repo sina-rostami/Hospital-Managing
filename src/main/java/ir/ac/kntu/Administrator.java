@@ -3,26 +3,27 @@ package ir.ac.kntu;
 import java.util.Scanner;
 
 public class Administrator implements WorkingUser {
-    private static Hospital hospital;
-    private static Scanner scanner;
+    private Hospital hospital;
+    private Scanner scanner;
+
+    public Administrator(Hospital hospital, Scanner scanner) {
+        this.hospital = hospital;
+        this.scanner = scanner;
+    }
+
     @Override
     public void startWorkLoop(Hospital myHospital) {
-        hospital = myHospital;
         clearScreen();
-        scanner = new Scanner(System.in);
-        try {
-            firstMenu();
-        } finally {
-            scanner.close();
-        }
+        firstMenu();
     }
-    public static void firstMenu() {
+    public void firstMenu() {
         System.out.print("            Menu\n" +
                 "--------------------------------\n" +
                 "1.Features And Performance menu\n" +
                 "2.Status menu\n" +
                 "3.Search menu\n" +
-                "4.exit\n" +
+                "4.back\n" +
+                "5.exit\n" +
                 "Enter the number of choose : ");
         int choose = scanner.nextInt() - 1;
         FirstMenuChoose[] first = FirstMenuChoose.values();
@@ -38,19 +39,19 @@ public class Administrator implements WorkingUser {
                 case SEARCH:
                     searchMenu();
                     break;
+                case BACK:
+                    return;
                 case EXIT:
                     System.exit(0);
                 default:
-                    System.out.println("Wrong Input! try Again...");
-                    firstMenu();
                     break;
             }
         } else {
             System.out.println("Wrong Input! try Again...");
-            firstMenu();
         }
+        firstMenu();
     }
-    public static void featureMenu() {
+    public void featureMenu() {
         System.out.print("            Features-Menu\n" +
                 "----------------------------------------------\n" +
                 "1.set, edit, see and discharge Patient\n" +
@@ -74,12 +75,12 @@ public class Administrator implements WorkingUser {
                     roomFeatures();
                     break;
                 case FIRST_MENU:
-                    firstMenu();
-                    break;
+                    return;
+                    //firstMenu();
+                    //break;
                 case EXIT:
                     System.exit(0);
                 default:
-                    System.out.println("Wrong Input! try Again...");
                     break;
             }
         } else {
@@ -87,7 +88,7 @@ public class Administrator implements WorkingUser {
         }
         featureMenu();
     }
-    public static void patientFeatures() {
+    public void patientFeatures() {
         System.out.print("Set, Edit or DisCharge a Patient\n" +
                 "***************************************\n" +
                 "1.Add new Patient\n" +
@@ -100,7 +101,7 @@ public class Administrator implements WorkingUser {
         if (choose >= 0 && choose < p.length) {
             switch (p[choose]) {
                 case ADD_PATIENT:
-                    Patient patient = hospital.addAndGetPatient(hospital.addAndGetNewOrder(scanner), scanner);
+                    Patient patient = hospital.addAndGetPatient(hospital.addAndGetNewOrder());
                     if (patient != null) {
                         System.out.println("Patient Successfully Added With National ID : " + patient.getNationalID());
                     }
@@ -129,7 +130,7 @@ public class Administrator implements WorkingUser {
                     System.out.print("Enter National ID of Patient : ");
                     patient = hospital.getPatient(scanner.nextInt());
                     if (patient != null) {
-                        hospital.removePatient(patient, scanner);
+                        hospital.removePatient(patient);
                     } else {
                         System.out.print("\nNo such A Patient Found\n");
                     }
@@ -138,8 +139,8 @@ public class Administrator implements WorkingUser {
                     printAllPatients();
                     break;
                 case FEATURE_MENU:
-                    featureMenu();
-                    break;
+                    return;
+                    //break;
                 case EXIT:
                     System.exit(0);
                 default:
@@ -150,7 +151,7 @@ public class Administrator implements WorkingUser {
         }
         patientFeatures();
     }
-    public static int employeeFeaturesMenu() {
+    public int employeeFeaturesMenu() {
         System.out.print("Set, edit, see or remove an Employee\n" +
                 "************************************\n" +
                 "1.Set New Doctor\n" +
@@ -166,13 +167,13 @@ public class Administrator implements WorkingUser {
         clearScreen();
         return choose;
     }
-    public static void employeeFeatures() {
+    public void employeeFeatures() {
         switch (employeeFeaturesMenu()) {
             case 1:
-                hospital.addOrEditDoctor(0, scanner);
+                hospital.addOrEditDoctor(0);
                 break;
             case 2:
-                hospital.addNurse(0, scanner);
+                hospital.addNurse(0);
                 break;
             case 3:
                 System.out.print("Enter Doctor's ID : ");
@@ -183,9 +184,9 @@ public class Administrator implements WorkingUser {
                     System.out.print("Enter 1(edit) , 2(remove) or 3(back) : ");
                     int choose1 = scanner.nextInt();
                     if (choose1 == 1) {
-                        hospital.addOrEditDoctor(id, scanner);
+                        hospital.addOrEditDoctor(id);
                     } else if (choose1 == 2) {
-                        hospital.deleteDoctor(doctor, scanner);
+                        hospital.deleteDoctor(doctor);
                     }
                 } else {
                     System.out.println("No Such a Doctor Found :(\n");
@@ -202,21 +203,22 @@ public class Administrator implements WorkingUser {
                     if (choose1 == 1) {
                         nurse.editNurse(scanner);
                     } else if (choose1 == 2) {
-                        hospital.deleteNurse(nurse, scanner);
+                        hospital.deleteNurse(nurse);
                     }
                 } else {
                     System.out.println("No Such a Nurse  Found :(\n");
                 }
                 break;
             case 5:
-                hospital.printAllDoctors(scanner);
+                hospital.printAllDoctors();
                 break;
             case 6:
                 printAllNurses();
                 break;
             case 7:
-                featureMenu();
-                break;
+                return;
+//                featureMenu();
+//                break;
             case 8:
                 System.exit(0);
             default:
@@ -225,7 +227,7 @@ public class Administrator implements WorkingUser {
         }
         employeeFeatures();
     }
-    public static int roomFeaturesMenu() {
+    public int roomFeaturesMenu() {
         System.out.print("set, edit, see and remove Room\n" +
                 "**********************************\n" +
                 "1.Set new Room\n" +
@@ -238,17 +240,17 @@ public class Administrator implements WorkingUser {
         clearScreen();
         return choose;
     }
-    public static void roomFeatures() {
+    public void roomFeatures() {
         int choose = roomFeaturesMenu();
         RoomFeature[] r = RoomFeature.values();
         if (choose >= 0 && choose < r.length) {
             switch (r[choose]) {
                 case SET:
-                    hospital.addNewRoom(scanner);
+                    hospital.addNewRoom();
                     roomFeatures();
                     break;
                 case S_E_R:
-                    Room room = hospital.getRoom(scanner);
+                    Room room = hospital.getRoom();
                     System.out.println(room.getRoomInfo());
                     System.out.println("Enter Choose (1(back), 2(edit), 3(set un/Available)) : ");
                     choose = scanner.nextInt();
@@ -280,8 +282,9 @@ public class Administrator implements WorkingUser {
                     printAllRooms();
                     break;
                 case BACK:
-                    featureMenu();
-                    break;
+                    return;
+//                    featureMenu();
+//                    break;
                 case EXIT:
                     System.exit(0);
                 default:
@@ -289,30 +292,26 @@ public class Administrator implements WorkingUser {
             }
         } else {
             System.out.println("Wrong Input! Try Again...");
+            roomFeatures();
         }
-        roomFeatures();
     }
-    public static void printAllNurses() {
+    public void printAllNurses() {
         clearScreen();
         for (Nurse n : hospital.getNurses()) {
             if (!n.isDeleted()) {
                 System.out.println(n.getInfo() + "\n");
             }
         }
-        System.out.println("press Enter to go back to previous Menu...");
-        scanner.nextLine();
     }
-    public static void printAllPatients() {
+    public void printAllPatients() {
         clearScreen();
         for (Patient p : hospital.getPatients()) {
             if (!p.isDisCharged()) {
                 System.out.println(p.getInfo());
             }
         }
-        System.out.println("press Enter to go back to previous Menu...");
-        scanner.nextLine();
     }
-    public static void printAllRooms() {
+    public void printAllRooms() {
         System.out.println("<< Ordinary >>\n");
         for (Room r : hospital.getOrdinaryRooms()) {
             System.out.println(r.getRoomInfo());
@@ -324,7 +323,7 @@ public class Administrator implements WorkingUser {
         System.out.println("press Enter to go back to previous Menu...");
         scanner.nextLine();
     }
-    public static void statusMenu() {
+    public void statusMenu() {
         System.out.print("            Status-Menu\n" +
                 "--------------------------------------------------------\n" +
                 "1.see Patients of a Part\n" +
@@ -332,7 +331,7 @@ public class Administrator implements WorkingUser {
                 "3.see Income of Hospital in a Specified Interval\n" +
                 "4.see history of Patients in a Specified Interval\n" +
                 "5.see all Shifts of a Part\n" +
-                "6.go back to the First-Menu\n" +
+                "6.back\n" +
                 "7.exit\n" +
                 "Enter the number of choose : ");
         int choose = scanner.nextInt() - 1;
@@ -341,16 +340,16 @@ public class Administrator implements WorkingUser {
         if (choose >= 0 && choose < s.length) {
             switch (s[choose]) {
                 case PATIENTS_OF_PART:
-                    hospital.printPartPatients(scanner);
+                    hospital.printPartPatients();
                     break;
                 case PATIENTS_OF_DOCTOR:
-                    hospital.printPatientsOfDr(scanner);
+                    hospital.printPatientsOfDr();
                     break;
                 case INCOME:
-                    hospital.printIncomeInterval(scanner);
+                    hospital.printIncomeInterval();
                     break;
                 case PATIENTS_OF_HOSPITAL:
-                    hospital.printPatientsIntv(scanner);
+                    hospital.printPatientsIntv();
                     break;
                 case SHIFTS_OF_PART:
                     System.out.print("which part (1(Ordinary), 2(Emergency)) : ");
@@ -373,7 +372,7 @@ public class Administrator implements WorkingUser {
         }
         statusMenu();
     }
-    public static void searchMenu() {
+    public void searchMenu() {
         System.out.print("            Search-Menu\n" +
                 "--------------------------------------------------------------\n" +
                 "1.unAvailable Rooms\n" +
@@ -390,7 +389,7 @@ public class Administrator implements WorkingUser {
                     hospital.printUnAvailableRooms();
                     break;
                 case D_N_OF_SHIFT:
-                    hospital.printEmployeeOfShift(scanner);
+                    hospital.printEmployeeOfShift();
                     break;
                 case FIRST_MENU:
                     firstMenu();
@@ -405,27 +404,36 @@ public class Administrator implements WorkingUser {
         }
         searchMenu();
     }
-    public static Hospital firstSet() {
-        System.out.print("Enter name of the Hospital : ");
-        String hospitalName = scanner.next();
-        System.out.print("Enter Address  of the Hospital : ");
-        String hospitalAddress = scanner.next();
-        System.out.print("Enter the Cost of a FirstBed room for a night : ");
-        int firstBedCost = scanner.nextInt();
-        System.out.print("Hospital is set :)");
-        System.out.print("\npress enter to continue....");
-        scanner.nextLine();
-        clearScreen();
-        return new Hospital(hospitalName, hospitalAddress, firstBedCost);
-    }
-    public static void clearScreen() {
+    public void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-    public static Boolean checkDate(int year, int month, int day) {
-        if (year > 0 && month > 0 && day > 0) {
-            return month < 13 && day < 32;
-        }
-        return false;
-    }
+}
+
+enum FirstMenuChoose {
+    FEATURE, STATUS, SEARCH, BACK, EXIT
+}
+
+enum FeatureMenuChoose {
+    PATIENT_INFO, EMPLOYEE_INFO, /*PART,*/ ROOM, FIRST_MENU, EXIT
+}
+
+enum PatientFeatures {
+    ADD_PATIENT, EDIT_PATIENT, DISCHARGE, PRINT_ALL, FEATURE_MENU, EXIT
+}
+
+enum RoomFeature {
+    SET, S_E_R, PRINT_ALL, BACK, EXIT
+}
+
+enum SearchMenuChoose {
+    UNAVAILABLE_ROOM, D_N_OF_SHIFT, FIRST_MENU, EXIT
+}
+
+enum StatusMenuChoose {
+    PATIENTS_OF_PART, PATIENTS_OF_DOCTOR, INCOME,
+    PATIENTS_OF_HOSPITAL, SHIFTS_OF_PART, FIRST_MENU, EXIT
+}
+enum ChooseRoom {
+    MID_FULL, EMPTY
 }

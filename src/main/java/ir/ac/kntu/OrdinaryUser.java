@@ -2,21 +2,37 @@ package ir.ac.kntu;
 
 import java.util.Scanner;
 
-public class OrdinaryUser implements WorkingUser{
-    private static Hospital hospital;
-    private static Scanner scanner;
-    private int nationalId;
+public class OrdinaryUser implements WorkingUser {
+    private Hospital hospital;
+    private Scanner scanner;
+    private Patient patient;
+
+    public OrdinaryUser(Scanner scanner, Hospital hospital) {
+        this.scanner = scanner;
+        this.hospital = hospital;
+    }
+
     @Override
     public void startWorkLoop(Hospital myHospital) {
-        hospital = myHospital;
         clearScreen();
-        scanner = new Scanner(System.in);
-        try {
+        findPatient();
+        if (patient != null) {
             menu();
-        } finally {
-            scanner.close();
+        } else {
+            return;
         }
     }
+
+    public void findPatient() {
+        System.out.print("Enter National ID : ");
+        int id = scanner.nextInt();
+        if (hospital.getPatient(id) != null) {
+            patient = hospital.getPatient(id);
+        } else {
+            System.out.println("No such a Patient found!");
+        }
+    }
+
     public void menu() {
         System.out.print("            Menu\n" +
                 "--------------------------------\n" +
@@ -45,33 +61,25 @@ public class OrdinaryUser implements WorkingUser{
                 case EXIT:
                     System.exit(0);
                 default:
-                    System.out.println("Wrong Input! try Again...");
-                    menu();
                     break;
             }
         } else {
             System.out.println("Wrong Input! try Again...");
-            menu();
         }
+        menu();
     }
 
     private void printShifts() {
-        System.out.println("Doctor with ID : " + hospital.getPatient(nationalId).getDoctorID());
-        System.out.println("Shifts:"+hospital.getDoctorWithID(hospital.getPatient(nationalId).getDoctorID()).shifts());
-        System.out.println("press Enter to go back to previous Menu...");
-        scanner.nextLine();
+        System.out.println("Doctor with ID : " + patient.getDoctorID());
+        System.out.println("Shifts:" + hospital.getDoctorWithID(patient.getDoctorID()).shifts());
     }
 
     private void getBill() {
-        System.out.println(hospital.getPatient(nationalId).getBill());
-        System.out.println("press Enter to go back to previous Menu...");
-        scanner.nextLine();
+        System.out.println(patient.getBill());
     }
 
     private void printInformation() {
-        System.out.println(hospital.getPatient(nationalId).getInfo());
-        System.out.println("press Enter to go back to previous Menu...");
-        scanner.nextLine();
+        System.out.println(patient.getInfo());
     }
 
     public void clearScreen() {
@@ -79,6 +87,7 @@ public class OrdinaryUser implements WorkingUser{
         System.out.flush();
     }
 }
+
 enum OrdinaryMenuChoose {
     INFO, SHIFTS, BILL, BACK, EXIT
 }

@@ -8,10 +8,10 @@ public class SecurityMan {
     private int id;
     private ArrayList<Shift> shifts = new ArrayList<>();
 
-    public SecurityMan(int id, String name) {
+    public SecurityMan(int id, String name, Scanner scanner) {
         this.id = id;
         this.name = name;
-
+        setShifts(scanner);
     }
 
     public void setShifts(Scanner scanner) {

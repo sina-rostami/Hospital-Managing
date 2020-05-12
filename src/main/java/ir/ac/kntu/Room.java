@@ -9,7 +9,7 @@ public class Room {
     private ArrayList<Patient> patients = new ArrayList<>();
     private int firstBedCost;
 
-    Room(int id, int numberOfBeds, Boolean isAvailable, int firstBedCost) {
+    public Room(int id, int numberOfBeds, Boolean isAvailable, int firstBedCost) {
         this.id = id;
         this.numberOfBeds = numberOfBeds;
         this.isAvailable = isAvailable;

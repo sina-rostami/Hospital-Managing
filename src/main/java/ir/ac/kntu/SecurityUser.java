@@ -2,28 +2,29 @@ package ir.ac.kntu;
 
 import java.util.Scanner;
 
-public class SecurityUser implements WorkingUser{
-    private static Hospital hospital;
-    private static Scanner scanner;
-    @Override
-    public void startWorkLoop(Hospital myHospital) {
-        hospital = myHospital;
-        clearScreen();
-        scanner = new Scanner(System.in);
-        try {
-            menu();
-        } finally {
-            scanner.close();
-        }
+public class SecurityUser implements WorkingUser {
+    private Hospital hospital;
+    private Scanner scanner;
+
+    public SecurityUser(Hospital hospital, Scanner scanner) {
+        this.hospital = hospital;
+        this.scanner = scanner;
     }
 
-    public  void menu() {
+    @Override
+    public void startWorkLoop(Hospital myHospital) {
+        clearScreen();
+        menu();
+    }
+
+    public void menu() {
         System.out.print("            Menu\n" +
                 "--------------------------------\n" +
                 "1.Patients Information\n" +
                 "2.Employees Information\n" +
                 "3.Rooms Information\n" +
-                "4.exit\n" +
+                "4.back\n" +
+                "5.exit\n" +
                 "Enter the number of choose : ");
         int choose = scanner.nextInt() - 1;
         clearScreen();
@@ -45,26 +46,23 @@ public class SecurityUser implements WorkingUser{
                 case EXIT:
                     System.exit(0);
                 default:
-                    System.out.println("Wrong Input! try Again...");
-                    menu();
                     break;
             }
         } else {
             System.out.println("Wrong Input! try Again...");
-            menu();
         }
+        menu();
     }
 
-    public  void printAllNurses() {
+    public void printAllNurses() {
         System.out.println("Nurses : ");
         for (Nurse n : hospital.getNurses()) {
             if (!n.isDeleted()) {
                 System.out.println(n.getInfo() + "\n");
             }
         }
-        System.out.println("press Enter to go back to previous Menu...");
-        scanner.nextLine();
     }
+
     public void printAllDoctors() {
         clearScreen();
         System.out.println("Doctors : ");
@@ -75,6 +73,7 @@ public class SecurityUser implements WorkingUser{
         }
         System.out.println();
     }
+
     public void printAllPatients() {
         clearScreen();
         for (Patient p : hospital.getPatients()) {
@@ -82,9 +81,8 @@ public class SecurityUser implements WorkingUser{
                 System.out.println(p.getInfo());
             }
         }
-        System.out.println("press Enter to go back to previous Menu...");
-        scanner.nextLine();
     }
+
     public void printAllRooms() {
         System.out.println("<< Ordinary >>\n");
         for (Room r : hospital.getOrdinaryRooms()) {
@@ -94,8 +92,6 @@ public class SecurityUser implements WorkingUser{
         for (Room r : hospital.getEmergencyRooms()) {
             System.out.println(r.getRoomInfo());
         }
-        System.out.println("press Enter to go back to previous Menu...");
-        scanner.nextLine();
     }
 
     public void clearScreen() {
@@ -103,6 +99,7 @@ public class SecurityUser implements WorkingUser{
         System.out.flush();
     }
 }
+
 enum SecurityMenuChoose {
     PATIENT, EMPLOYEE, ROOM, BACK, EXIT
 }
