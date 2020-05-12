@@ -47,8 +47,13 @@ public class Main {
                 case EXIT:
                     System.exit(0);
                     break;
+                default:
+                    break;
             }
             user.startWorkLoop(hospital);
+        } else {
+            System.out.println("Wrong Input Try Again!");
+            menu();
         }
     }
     public static Hospital firstSet() {

@@ -24,6 +24,11 @@ public class Hospital {
         this.firstBedCost = firstBedCost;
         this.scanner = scanner;
     }
+    public void addDoctor(Doctor doctor) {
+        if(doctor != null) {
+            doctors.add(doctor);
+        }
+    }
     public Doctor addOrEditDoctor(int id) {
         Doctor d;
         System.out.print("Enter name of Doctor : ");
