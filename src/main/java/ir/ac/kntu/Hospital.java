@@ -175,9 +175,9 @@ public class Hospital {
         int i = scanner.nextInt();
         if(i <= parts.size()) {
             System.out.println(parts.get(i - 1).getName());
-                    for(Patient p : parts.get(i - 1).getPatients()) {
-                        System.out.println(p.getNationalID());
-                    }
+            for (Patient p : parts.get(i - 1).getPatients()) {
+                System.out.println(p.getNationalID());
+            }
         } else {
             System.out.println("Wrong Input !");
         }
@@ -335,8 +335,7 @@ public class Hospital {
             for(Nurse n : nurses1) {
                 n.setShifts(scanner);
             }
-        }
-        else {
+        } else {
             int doctorIndex = 0;
             for (int i = 0; i < nurses1.size(); i++) {
                 if (nurses1.get(i).isDeleted()) {
