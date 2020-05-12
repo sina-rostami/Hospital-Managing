@@ -5,7 +5,7 @@ import java.util.*;
 public class Part {
     private String name;
     private int roomIds = 100;
-    private ArrayList<Room> rooms = new ArrayList<Room>();
+    private ArrayList<Room> rooms = new ArrayList<>();
     private ArrayList<Patient> patients = new ArrayList<>();
     private ArrayList<Doctor> doctors = new ArrayList<>();
     private ArrayList<Nurse> nurses = new ArrayList<>();
@@ -14,6 +14,10 @@ public class Part {
     public Part(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Boolean addPatient(Patient patient, ChooseRoom chooseRoom) {

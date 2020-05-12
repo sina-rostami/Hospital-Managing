@@ -84,14 +84,7 @@ public class SecurityUser implements WorkingUser {
     }
 
     public void printAllRooms() {
-        System.out.println("<< Ordinary >>\n");
-        for (Room r : hospital.getOrdinaryRooms()) {
-            System.out.println(r.getRoomInfo());
-        }
-        System.out.println("\n<< Emergency : >>\n");
-        for (Room r : hospital.getEmergencyRooms()) {
-            System.out.println(r.getRoomInfo());
-        }
+        hospital.printAllRooms();
     }
 
     public void clearScreen() {

@@ -17,9 +17,11 @@ public class Patient {
     private Room room;
     private Insurance insurance;
     private Boolean isDisCharged;
+    private ChooseRoom chooseRoom;
 
     public Patient(int id, String name, int nationalID, IllnessType illnessType, HumanKind humanKind, int age,
-                   Doctor doctor, PartOfHospital partOfHospital, Insurance insurance, LocalDate hospitalizationDate) {
+                   Doctor doctor, PartOfHospital partOfHospital, Insurance insurance, LocalDate hospitalizationDate,
+                   ChooseRoom chooseRoom) {
         this.id = id;
         this.name = name;
         this.nationalID = nationalID;
@@ -31,7 +33,13 @@ public class Patient {
         this.insurance = insurance;
         this.isDisCharged = false;
         this.hospitalizationDate = hospitalizationDate;
+        this.chooseRoom = chooseRoom;
     }
+
+    public ChooseRoom getChooseRoom() {
+        return chooseRoom;
+    }
+
 
     public void setRoom(Room room) {
         this.room = room;
@@ -43,7 +51,7 @@ public class Patient {
 
     public void editPatient(Scanner scanner) {
         System.out.print("Enter Name : ");
-        this.name = scanner.nextLine();
+        this.name = scanner.next();
         System.out.print("Enter National ID : ");
         this.nationalID = scanner.nextInt();
         System.out.print("Enter Age : ");
@@ -96,6 +104,10 @@ public class Patient {
         }
     }
 
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
     public int getDoctorID() {
         return doctor.getId();
     }
@@ -133,12 +145,11 @@ public class Patient {
                 "Illness Type : " + illnessType + "\n" +
                 "Doctor ID : " + doctor.getId() + "\n" +
                 "Nurses IDs : " + nurses() + "\n" +
-                "isDisCharged : " + isDisCharged + "\n" +
                 "DisCharging Date : " + disChargingDate + "\n";
 
     }
 
-    public void setDisCharged( ) {
+    public void setDisCharged() {
         LocalDate localDate = Hospital.setDate();
         if (localDate == null) {
             Main.clearScreen();

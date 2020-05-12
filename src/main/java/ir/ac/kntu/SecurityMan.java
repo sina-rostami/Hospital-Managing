@@ -20,10 +20,19 @@ public class SecurityMan {
         System.out.println("Enter Shifts (eg: 1 2 (saturday shift 1)) : ");
         for (int i = 0; i < counter; i++) {
             Shift shift = new Shift(scanner.nextInt(), scanner.nextInt());
-            if (!hasThisShift(shift.getDay(), shift.getShift())) {
+            if (!hasThisShift(shift.getDay(), shift.getShift()) &&
+                    shift.getDay() > 0 && shift.getDay() < 8 && shift.getShift() > 0 && shift.getShift() < 4) {
                 shifts.add(shift);
+            } else {
+                System.out.println("Wrong");
+                i--;
             }
         }
+    }
+
+
+    public int getId() {
+        return id;
     }
 
     public boolean hasThisShift(int day, int shift) {

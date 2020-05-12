@@ -13,11 +13,11 @@ public class Doctor {
     private Boolean isDeleted = false;
     private int partId;
 
-    public Doctor(String name, int id, ArrayList<Shift> shifts, int partId) {
+    public Doctor(String name, int id, ArrayList<Shift> shifts, int partId, int maxPatientsNumber) {
         this.name = name;
         this.id = id;
         shiftsCopy(shifts);
-        maxPatientsNumber = 5;
+        this.maxPatientsNumber = maxPatientsNumber;
         this.partId = partId;
     }
 
@@ -168,13 +168,8 @@ public class Doctor {
         return patient;
     }
 
-    public String part() {
-        if (partId == 1) {
-            return "Ordinary";
-        } else if (partId == 2) {
-            return "Emergency";
-        }
-        return null;
+    public PartOfHospital part() {
+        return PartOfHospital.values()[partId - 1];
     }
 
     public String getInfo() {
@@ -182,6 +177,7 @@ public class Doctor {
                 "Name : " + name + "\n" +
                 "ID : " + id + "\n" +
                 "Part : " + part() + "\n" +
+                "Max Patients : " + maxPatientsNumber + "\n" +
                 "Shifts : " + this.shifts() + "\n" +
                 "Nurses : " + this.nursesIDs() + "\n" +
                 "Patients : " + this.patientsIDs() + "\n";

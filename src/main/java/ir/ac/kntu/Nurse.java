@@ -31,10 +31,11 @@ public class Nurse {
                     id + " (eg: 1 2(saturday shift 1)) :");
             for (int i = shifts.size(); i < 6; i++) {
                 Shift temp = new Shift(scanner.nextInt(), scanner.nextInt());
-                if (!hasThisShift(temp.getDay(), temp.getShift())) {
+                if (!hasThisShift(temp.getDay(), temp.getShift()) &&
+                        temp.getDay() > 0 && temp.getDay() < 8 && temp.getShift() > 0 && temp.getShift() < 4) {
                     shifts.add(new Shift(temp.getDay(), temp.getShift()));
                 } else {
-                    System.out.println("Has this shift");
+                    System.out.println("Wrong");
                     i--;
                 }
             }
@@ -121,13 +122,8 @@ public class Nurse {
         return doctor;
     }
 
-    public String part() {
-        if (partId == 1) {
-            return "Ordinary";
-        } else if (partId == 2) {
-            return "Emergency";
-        }
-        return null;
+    public PartOfHospital part() {
+        return PartOfHospital.values()[partId - 1];
     }
 
     public String getInfo() {
