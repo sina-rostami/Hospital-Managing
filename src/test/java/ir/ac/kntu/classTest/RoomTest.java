@@ -48,6 +48,6 @@ public class RoomTest {
 
     @Test
     public void getRoomCost() {
-        assertEquals(600, (int)room.getRoomCost());
+        assertEquals(780, (int)room.getRoomCost());
     }
 }
