@@ -109,7 +109,10 @@ public class Patient {
     }
 
     public int getDoctorID() {
-        return doctor.getId();
+        if(doctor != null) {
+            return doctor.getId();
+        }
+        return 0;
     }
 
     public int getNationalID() {
@@ -126,8 +129,10 @@ public class Patient {
 
     public String nurses() {
         String nurses = "";
-        for (Nurse n : doctor.getNurses()) {
-            nurses += n.getId() + "   ";
+        if (doctor != null) {
+            for (Nurse n : doctor.getNurses()) {
+                nurses += n.getId() + "   ";
+            }
         }
         return nurses;
     }
@@ -143,7 +148,7 @@ public class Patient {
                 "Hospitalized Part : " + partOfHospital + "\n" +
                 "Room ID : " + room.getId() + "\n" +
                 "Illness Type : " + illnessType + "\n" +
-                "Doctor ID : " + doctor.getId() + "\n" +
+                "Doctor ID : " + getDoctorID() + "\n" +
                 "Nurses IDs : " + nurses() + "\n" +
                 "DisCharging Date : " + disChargingDate + "\n";
 

@@ -150,10 +150,14 @@ public class ObjectMaker {
             System.out.println("Wrong Input! Try Again...");
             return null;
         }
-        Doctor doctor = hospital.findDoctor(order.getToBeHospitalizedPart());
+        Doctor doctor = null;
+        doctor = hospital.findDoctor(order.getToBeHospitalizedPart());
         if (doctor == null) {
             System.out.println("No Doctors Found !! ");
             return null;
+        }
+        if(order.getToBeHospitalizedPart() == PartOfHospital.EMERGENCY) {
+            doctor = null;
         }
         return new Patient(id, order.getName(), nationalID, order.getIllnessType(), humanKind, age, doctor,
                 order.getToBeHospitalizedPart(), insurance, order.getDate(), chooseRoom);

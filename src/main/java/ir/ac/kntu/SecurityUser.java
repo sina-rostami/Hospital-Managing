@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class SecurityUser implements WorkingUser {
     private Hospital hospital;
     private Scanner scanner;
+    private SecurityMan user;
 
     public SecurityUser(Hospital hospital, Scanner scanner) {
         this.hospital = hospital;
@@ -14,8 +15,23 @@ public class SecurityUser implements WorkingUser {
     @Override
     public void startWorkLoop(Hospital myHospital) {
         clearScreen();
-        menu();
+        findUser();
+        if(user != null) {
+            menu();
+        }
+        return;
     }
+
+    public void findUser() {
+        System.out.print("Enter ID : ");
+        int id = scanner.nextInt();
+        if (hospital.getSecMan(id) != null) {
+            user = hospital.getSecMan(id);
+        } else {
+            System.out.println("No such a SecurityMan found!");
+        }
+    }
+
 
     public void menu() {
         System.out.print("            Menu\n" +

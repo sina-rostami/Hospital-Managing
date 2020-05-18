@@ -37,6 +37,17 @@ public class RoomEquipment {
         this.lastCheck = lastCheck;
     }
 
+    public double getCoe() {
+        if (getId() == 001) {
+            return 0.1;
+        } else if (getId() == 002) {
+            return 0.15;
+        } else if (getId() == 003) {
+            return 0.05;
+        }
+        return 0;
+    }
+
     @Override
     public String toString() {
         return "ID : " + id +

@@ -7,15 +7,31 @@ public class FacilityMan {
     private String name;
     private int id;
     private ArrayList<Shift> shifts = new ArrayList<>();
+    private boolean isBusy;
 
     public FacilityMan(int id, String name, Scanner scanner) {
         this.name = name;
         this.id = id;
+        this.isBusy = false;
         setShifts(scanner);
+        System.out.println("Added successfully!");
+    }
+    public FacilityMan(int id, String name, ArrayList<Shift> shifts) {
+        this.name = name;
+        this.id = id;
+        this.shifts = shifts;
     }
 
     public int getId() {
         return id;
+    }
+
+    public boolean isBusy() {
+        return isBusy;
+    }
+
+    public void setBusy(boolean busy) {
+        isBusy = busy;
     }
 
     public void setShifts(Scanner scanner) {
@@ -43,12 +59,31 @@ public class FacilityMan {
         return false;
     }
 
+    public boolean hasThisShift(int day) {
+        for (int i = 0; i < shifts.size(); i++) {
+            if (shifts.get(i).getDay() == day ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String shifts() {
         String shift = "";
         for (int i = 0; i < shifts.size(); i++) {
             shift += shifts.get(i).getDay() + "->" + shifts.get(i).getShift() + "   ";
         }
         return shift;
+    }
+
+    public int getCloserShift(int day) {
+        int i = 0, c;
+        for(i =  day, c = 0; c < 7; i++, i %= 7, c++) {
+            if(hasThisShift(i)) {
+                break;
+            }
+        }
+        return i;
     }
 
     @Override

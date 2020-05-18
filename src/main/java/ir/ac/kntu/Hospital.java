@@ -65,6 +65,23 @@ public class Hospital {
         autoSet(d.getPartId());
         System.out.println("Doctor with ID : " + d.getId() + " Successfully Deleted!\n");
     }
+    public void seeDoctor() {
+        System.out.print("Enter Doctor's ID : ");
+        int id = scanner.nextInt();
+        Doctor doctor = getDoctorWithID(id);
+        if (doctor != null) {
+            System.out.println(doctor.getInfo());
+            System.out.print("Enter 1(edit) , 2(remove) or 3(back) : ");
+            int choose1 = scanner.nextInt();
+            if (choose1 == 1) {
+                addOrEditDoctor(id);
+            } else if (choose1 == 2) {
+                deleteDoctor(doctor);
+            }
+        } else {
+            System.out.println("No Such a Doctor Found :(\n");
+        }
+    }
     public void printAllDoctors() {
         Main.clearScreen();
         for(Part p : parts) {
@@ -105,6 +122,23 @@ public class Hospital {
         parts.get(n.getPartId() - 1).removeNurse(n);
         autoSet(n.getPartId());
         System.out.println("Nurse with ID : " + n.getId() + " Successfully Deleted!\n");
+    }
+    public void seeNurse() {
+        System.out.print("Enter Nurse's ID : ");
+        int id = scanner.nextInt();
+        Nurse nurse = getNurseWithID(id);
+        if (nurse != null) {
+            System.out.println(nurse.getInfo());
+            System.out.print("Enter 1(edit) , 2(remove) or 3(back) : ");
+            int choose1 = scanner.nextInt();
+            if (choose1 == 1) {
+                nurse.editNurse(scanner);
+            } else if (choose1 == 2) {
+                deleteNurse(nurse);
+            }
+        } else {
+            System.out.println("No Such a Nurse  Found :(\n");
+        }
     }
     public void printAllNurses() {
         Main.clearScreen();
@@ -244,8 +278,11 @@ public class Hospital {
     public void addNewRoom() {
         System.out.print("Enter the Part you want to add Room (1-Ordinary, 2-Emergency, 3-Burn, 4-ICU) :");
         int partValue = scanner.nextInt();
-        System.out.print("Enter number of Beds in the Room : ");
-        int numberOfBeds = scanner.nextInt();
+        int numberOfBeds = 1;
+        if(partValue != 4) {
+            System.out.print("Enter number of Beds in the Room : ");
+            numberOfBeds = scanner.nextInt();
+        }
 
         if(partValue <= parts.size()) {
             parts.get(partValue - 1).addRoom(numberOfBeds, firstBedCost, scanner);
@@ -265,6 +302,26 @@ public class Hospital {
         }
         return room;
     }
+    public void damageReport(Room room, int index) {
+        index--;
+        LocalDate localDate = LocalDate.now();
+        int day = (localDate.getDayOfWeek().getValue() + 2) % 7;
+        if(facilityMEN != null && facilityMEN.size() > 0 && index < room.getRoomEquipments().size() && index > 0 ) {
+            FacilityMan facilityMan = facilityMEN.get(0);
+            int min = facilityMan.getCloserShift(day);
+            for (FacilityMan f : facilityMEN) {
+                if(!f.isBusy() && f.getCloserShift(day) < min) {
+                    min = f.getCloserShift(day);
+                    facilityMan = f;
+                }
+            }
+            room.getRoomEquipments().get(index).setOk(false);
+            facilityMan.setBusy(true);
+            System.out.println("Report Sent to Facility Man ID " + facilityMan.getId() + "!");
+        } else {
+            System.out.println("NO Facility man or No Equips!");
+        }
+    }
     public void printAllRooms() {
         for(Part p : parts) {
             System.out.println(p.getName());
@@ -282,6 +339,7 @@ public class Hospital {
     public void addSecMan(int id) {
         if(id != 0) {
             deleteSecMan(getSecMan(id));
+        } else {
             id = secManIDs++;
         }
         SecurityMan securityMan = objectMaker.newSecMan(id);
@@ -299,9 +357,31 @@ public class Hospital {
         securityMEN.remove(securityMan);
         System.out.println("Sec man Successfully Removed!");
     }
+    public void seeSecMan() {
+        System.out.print("Enter ID : ");
+        int id = scanner.nextInt();
+        SecurityMan man = getSecMan(id);
+        if(man != null) {
+            System.out.println(man.toString() + "\nEnter 1(edit) , 2(remove) or 3(back) : ");
+            int choose = scanner.nextInt();
+            if (choose == 1) {
+                addSecMan(man.getId());
+            } else if (choose == 2) {
+                deleteSecMan(man);
+            }
+        } else {
+            System.out.println("Not Found !");
+        }
+    }
+    public void printAllSecMen() {
+        for(SecurityMan man : securityMEN) {
+            System.out.println(man.toString());
+        }
+    }
     public void addFacMan(int id) {
         if(id != 0) {
             deleteFacMan(getFacMan(id));
+        } else {
             id = facManIDs++;
         }
         FacilityMan facilityMan = objectMaker.newFacMan(id);
@@ -315,14 +395,16 @@ public class Hospital {
         }
         return null;
     }
+    public void printAllFacMan() {
+        for(FacilityMan man : facilityMEN) {
+            System.out.println(man.toString());
+        }
+    }
     public void deleteFacMan(FacilityMan facilityMan) {
         facilityMEN.remove(facilityMan);
         System.out.println("Fac man Successfully Removed!");
     }
     public void autoSet(int part) {
-        if(part == 4) {
-            return;
-        }
         ArrayList<Nurse> nurses1 = parts.get(part - 1).getNursesForShiftSet();
         ArrayList<Doctor> doctors1 = parts.get(part - 1).getDoctors();
         for (Doctor d : doctors1) {
@@ -411,10 +493,6 @@ public class Hospital {
         System.out.println("\n" + "Hospital Income : " + sum);
     }
     public void printShiftsOfPart(int partId) {
-        if (partId == 1) {
-            ordinary.printShifts();
-        } else if (partId == 2) {
-            emergency.printShifts();
-        }
+        parts.get(partId).printShifts();
     }
 }

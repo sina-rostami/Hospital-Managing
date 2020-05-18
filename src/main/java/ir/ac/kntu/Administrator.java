@@ -153,12 +153,18 @@ public class Administrator implements WorkingUser {
                 "************************************\n" +
                 "1.Set New Doctor\n" +
                 "2.Set New Nurse\n" +
-                "3.See, Edit or Remove a Doctor\n" +
-                "4.See, Edit or Remove a Nurse\n" +
-                "5.Show All Doctors Information\n" +
-                "6.Show All Nurses Information\n" +
-                "7.go back to the Feature-Menu\n" +
-                "8.exit\n" +
+                "3.Set New SecurityMan\n" +
+                "4.Set New FacilityMan\n" +
+                "5.See, Edit or Remove a Doctor\n" +
+                "6.See, Edit or Remove a Nurse\n" +
+                "7.See, Edit or Remove a SecurityMan\n" +
+                "8.See, Edit or Remove a FacilityMan\n" +
+                "9.Show All Doctors Information\n" +
+                "10.Show All Nurses Information\n" +
+                "11.Show All SecurityMan Information\n" +
+                "12.Show All FacilityMan Information\n" +
+                "13.go back to the Feature-Menu\n" +
+                "14.exit\n" +
                 "Enter the number of choose : ");
         int choose = scanner.nextInt();
         clearScreen();
@@ -173,48 +179,51 @@ public class Administrator implements WorkingUser {
                 hospital.addNurse(0);
                 break;
             case 3:
-                System.out.print("Enter Doctor's ID : ");
-                int id = scanner.nextInt();
-                Doctor doctor = hospital.getDoctorWithID(id);
-                if (doctor != null) {
-                    System.out.println(doctor.getInfo());
-                    System.out.print("Enter 1(edit) , 2(remove) or 3(back) : ");
-                    int choose1 = scanner.nextInt();
-                    if (choose1 == 1) {
-                        hospital.addOrEditDoctor(id);
-                    } else if (choose1 == 2) {
-                        hospital.deleteDoctor(doctor);
-                    }
-                } else {
-                    System.out.println("No Such a Doctor Found :(\n");
-                }
+                hospital.addSecMan(0);
                 break;
             case 4:
-                System.out.print("Enter Nurse's ID : ");
-                id = scanner.nextInt();
-                Nurse nurse = hospital.getNurseWithID(id);
-                if (nurse != null) {
-                    System.out.println(nurse.getInfo());
-                    System.out.print("Enter 1(edit) , 2(remove) or 3(back) : ");
-                    int choose1 = scanner.nextInt();
-                    if (choose1 == 1) {
-                        nurse.editNurse(scanner);
-                    } else if (choose1 == 2) {
-                        hospital.deleteNurse(nurse);
-                    }
-                } else {
-                    System.out.println("No Such a Nurse  Found :(\n");
-                }
+                hospital.addFacMan(0);
                 break;
             case 5:
-                hospital.printAllDoctors();
+                hospital.seeDoctor();
                 break;
             case 6:
-                hospital.printAllNurses();
+                hospital.seeNurse();
                 break;
             case 7:
-                return;
+                hospital.seeSecMan();
+                break;
             case 8:
+                System.out.print("Enter ID : ");
+                int id = scanner.nextInt();
+                FacilityMan fMan = hospital.getFacMan(id);
+                if(fMan != null) {
+                    System.out.println(fMan.toString() + "\nEnter 1(edit) , 2(remove) or 3(back) : ");
+                    int choose = scanner.nextInt();
+                    if (choose == 1) {
+                        hospital.addFacMan(fMan.getId());
+                    } else if (choose == 2) {
+                        hospital.deleteFacMan(fMan);
+                    }
+                } else {
+                    System.out.println("Not Found !");
+                }
+                break;
+            case 9:
+                hospital.printAllDoctors();
+                break;
+            case 10:
+                hospital.printAllNurses();
+                break;
+            case 11:
+                hospital.printAllSecMen();
+                break;
+            case 12:
+                hospital.printAllFacMan();
+                break;
+            case 13:
+                return;
+            case 14:
                 System.exit(0);
             default:
                 System.out.println("Wrong Input! Try Again...\n");
@@ -250,7 +259,7 @@ public class Administrator implements WorkingUser {
                         break;
                     }
                     System.out.println(room.getRoomInfo());
-                    System.out.println("Enter Choose (1(back), 2(edit), 3(set un/Available)) : ");
+                    System.out.println("Enter Choose (1(back), 2(edit), 3(set un/Available), 4(Report damage)) : ");
                     choose = scanner.nextInt();
                     clearScreen();
                     switch (choose) {
@@ -270,6 +279,10 @@ public class Administrator implements WorkingUser {
                                 System.out.println("Room Availability Can not be Changed Because there Are" +
                                         " Patients in Room Discharge them First :) \n");
                             }
+                            break;
+                        case 4:
+                            System.out.print(room.equips() + "\nWhich one (num) ?");
+                            hospital.damageReport(room, scanner.nextInt());
                             break;
                         default:
                             System.out.println("Wrong Input! Try Again \n");
@@ -329,8 +342,8 @@ public class Administrator implements WorkingUser {
                     break;
                 case SHIFTS_OF_PART:
                     System.out.print("which part (1(Ordinary), 2(Emergency)) : ");
-                    int partId = scanner.nextInt();
-                    if (partId == 1 || partId == 2) {
+                    int partId = scanner.nextInt() - 1;
+                    if (partId > 0 && partId < 4) {
                         hospital.printShiftsOfPart(partId);
                     }
                     break;
@@ -383,28 +396,21 @@ public class Administrator implements WorkingUser {
         System.out.flush();
     }
 }
-
 enum FirstMenuChoose {
     FEATURE, STATUS, SEARCH, BACK, EXIT
 }
-
 enum FeatureMenuChoose {
     PATIENT_INFO, EMPLOYEE_INFO, ROOM, FIRST_MENU, EXIT
 }
-
 enum PatientFeatures {
     ADD_PATIENT, EDIT_PATIENT, DISCHARGE, PRINT_ALL, FEATURE_MENU, EXIT
 }
-
 enum RoomFeature {
     SET, S_E_R, PRINT_ALL, BACK, EXIT
 }
-
 enum SearchMenuChoose {
     UNAVAILABLE_ROOM, D_N_OF_SHIFT, FIRST_MENU, EXIT
 }
-
 enum StatusMenuChoose {
-    PATIENTS_OF_PART, PATIENTS_OF_DOCTOR, INCOME,
-    PATIENTS_OF_HOSPITAL, SHIFTS_OF_PART, FIRST_MENU, EXIT
+    PATIENTS_OF_PART, PATIENTS_OF_DOCTOR, INCOME,PATIENTS_OF_HOSPITAL, SHIFTS_OF_PART, FIRST_MENU, EXIT
 }

@@ -9,6 +9,7 @@ public class Room {
     private ArrayList<Patient> patients = new ArrayList<>();
     private int firstBedCost;
     private ArrayList<RoomEquipment> roomEquipments = new ArrayList<>();
+    private boolean isVIP;
 
     public Room(int id, int numberOfBeds, Boolean isAvailable, int firstBedCost, ArrayList<RoomEquipment> equips) {
         this.id = id;
@@ -16,6 +17,17 @@ public class Room {
         this.isAvailable = isAvailable;
         this.firstBedCost = firstBedCost;
         this.roomEquipments = equips;
+        if(numberOfBeds == 1) {
+            this.isVIP = true;
+        }
+    }
+
+    public boolean isVIP() {
+        return isVIP;
+    }
+
+    public void setVIP(boolean isVIP) {
+        isVIP = isVIP;
     }
 
     public Boolean editRoom(int numberOfBeds) {
@@ -66,7 +78,6 @@ public class Room {
         patients.remove(patient);
     }
 
-
     public double getRoomCost() {
         double coefficient = 1;
         if (this.numberOfBeds == 1) {
@@ -75,16 +86,11 @@ public class Room {
         for (int i = 1; i < this.numberOfBeds; i++) {
             coefficient -= 0.1;
         }
-        boolean[] equips = new boolean[3];
         double equipCoe = 1;
         if (roomEquipments.size() > 0) {
             for (RoomEquipment r : roomEquipments) {
-                if (r.getId() == 001) {
-                    equipCoe += 0.1;
-                } else if (r.getId() == 002) {
-                    equipCoe += 0.15;
-                } else if (r.getId() == 003) {
-                    equipCoe += 0.05;
+                if(r.isOk()) {
+                    equipCoe += r.getCoe();
                 }
             }
         }
@@ -105,16 +111,22 @@ public class Room {
         String equ = "";
         if (roomEquipments.size() > 0) {
             for (RoomEquipment r : roomEquipments) {
-                if (r.getId() == 001) {
-                    equ += "Refrigerator, ";
-                } else if (r.getId() == 002) {
-                    equ += "Tv, ";
-                } else if (r.getId() == 003) {
-                    equ += "A/C";
+                if(r.isOk()) {
+                    if (r.getId() == 001) {
+                        equ += "Refrigerator, ";
+                    } else if (r.getId() == 002) {
+                        equ += "Tv, ";
+                    } else if (r.getId() == 003) {
+                        equ += "A/C";
+                    }
                 }
             }
         }
         return equ;
+    }
+
+    public ArrayList<RoomEquipment> getRoomEquipments() {
+        return new ArrayList<>(roomEquipments);
     }
 
     public String getRoomInfo() {

@@ -12,6 +12,7 @@ public class SecurityMan {
         this.id = id;
         this.name = name;
         setShifts(scanner);
+        System.out.println("Added successfully!");
     }
 
     public void setShifts(Scanner scanner) {
