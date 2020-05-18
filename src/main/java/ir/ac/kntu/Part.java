@@ -1,6 +1,5 @@
 package ir.ac.kntu;
 
-import java.sql.Array;
 import java.util.*;
 
 public class Part {

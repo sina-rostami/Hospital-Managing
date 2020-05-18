@@ -25,8 +25,12 @@ public class RoomEquipment {
         return isOk;
     }
 
-    public void setOk(boolean ok) {
-        isOk = ok;
+    public void setOk() {
+        if(isOk) {
+            isOk = false;
+        } else {
+            isOk = true;
+        }
     }
 
     public LocalDate getLastCheck() {

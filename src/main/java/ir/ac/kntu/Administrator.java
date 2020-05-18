@@ -259,7 +259,7 @@ public class Administrator implements WorkingUser {
                         break;
                     }
                     System.out.println(room.getRoomInfo());
-                    System.out.println("Enter Choose (1(back), 2(edit), 3(set un/Available), 4(Report damage)) : ");
+                    System.out.println("Enter Choose (1(back), 2(edit), 3(set un/Available), 4(change equip damage)):");
                     choose = scanner.nextInt();
                     clearScreen();
                     switch (choose) {

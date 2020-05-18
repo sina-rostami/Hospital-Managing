@@ -14,6 +14,11 @@ public class SecurityMan {
         setShifts(scanner);
         System.out.println("Added successfully!");
     }
+    public SecurityMan(int id, String name, ArrayList<Shift> shifts) {
+        this.name = name;
+        this.id = id;
+        this.shifts = shifts;
+    }
 
     public void setShifts(Scanner scanner) {
         System.out.print("How Many Shifts does this SecurityMan has ? ");

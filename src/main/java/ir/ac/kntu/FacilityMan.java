@@ -30,8 +30,12 @@ public class FacilityMan {
         return isBusy;
     }
 
-    public void setBusy(boolean busy) {
-        isBusy = busy;
+    public void setBusy() {
+        if(isBusy) {
+            isBusy = false;
+        } else {
+            isBusy = true;
+        }
     }
 
     public void setShifts(Scanner scanner) {

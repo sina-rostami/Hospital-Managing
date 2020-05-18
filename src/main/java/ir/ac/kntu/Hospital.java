@@ -5,8 +5,6 @@ public class Hospital {
     private String name;
     private String address;
     private int firstBedCost;
-    private Part ordinary = new Part(1, "Ordinary");
-    private Part emergency = new Part(2, "Emergency");
     private ArrayList<Part> parts;
     private ArrayList<Doctor> doctors = new ArrayList<>();
     private ArrayList<Nurse> nurses = new ArrayList<>();
@@ -315,9 +313,9 @@ public class Hospital {
                     facilityMan = f;
                 }
             }
-            room.getRoomEquipments().get(index).setOk(false);
-            facilityMan.setBusy(true);
-            System.out.println("Report Sent to Facility Man ID " + facilityMan.getId() + "!");
+            room.getRoomEquipments().get(index).setOk();
+            facilityMan.setBusy();
+            System.out.println("Successfully changed with Facility Man ID " + facilityMan.getId() + "!");
         } else {
             System.out.println("NO Facility man or No Equips!");
         }
@@ -401,8 +399,12 @@ public class Hospital {
         }
     }
     public void deleteFacMan(FacilityMan facilityMan) {
-        facilityMEN.remove(facilityMan);
-        System.out.println("Fac man Successfully Removed!");
+        if(!facilityMan.isBusy()) {
+            facilityMEN.remove(facilityMan);
+            System.out.println("Fac man Successfully Removed!");
+        } else {
+            System.out.println("He is too Busy!!");
+        }
     }
     public void autoSet(int part) {
         ArrayList<Nurse> nurses1 = parts.get(part - 1).getNursesForShiftSet();
