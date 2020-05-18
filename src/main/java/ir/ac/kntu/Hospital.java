@@ -302,6 +302,10 @@ public class Hospital {
     }
     public void damageReport(Room room, int index) {
         index--;
+        if(!room.getRoomEquipments().get(index).isOk()) {
+            room.getRoomEquipments().get(index).setOk(null);
+            return;
+        }
         LocalDate localDate = LocalDate.now();
         int day = (localDate.getDayOfWeek().getValue() + 2) % 7;
         if(facilityMEN != null && facilityMEN.size() > 0 && index < room.getRoomEquipments().size() && index > 0 ) {
@@ -313,7 +317,7 @@ public class Hospital {
                     facilityMan = f;
                 }
             }
-            room.getRoomEquipments().get(index).setOk();
+            room.getRoomEquipments().get(index).setOk(facilityMan);
             facilityMan.setBusy();
             System.out.println("Successfully changed with Facility Man ID " + facilityMan.getId() + "!");
         } else {
@@ -369,11 +373,6 @@ public class Hospital {
             }
         } else {
             System.out.println("Not Found !");
-        }
-    }
-    public void printAllSecMen() {
-        for(SecurityMan man : securityMEN) {
-            System.out.println(man.toString());
         }
     }
     public void addFacMan(int id) {

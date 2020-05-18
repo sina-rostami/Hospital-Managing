@@ -6,6 +6,7 @@ public class RoomEquipment {
     private int id;
     private boolean isOk;
     private LocalDate lastCheck;
+    private FacilityMan fixer;
 
     public RoomEquipment(int id) {
         this.id = id;
@@ -25,10 +26,16 @@ public class RoomEquipment {
         return isOk;
     }
 
-    public void setOk() {
+    public void setFixer(FacilityMan fixer) {
+        this.fixer = fixer;
+    }
+
+    public void setOk(FacilityMan fixer) {
         if(isOk) {
             isOk = false;
+            this.fixer = fixer;
         } else {
+            this.fixer.setBusy();
             isOk = true;
         }
     }

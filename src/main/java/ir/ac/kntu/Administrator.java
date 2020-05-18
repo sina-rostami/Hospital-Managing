@@ -216,7 +216,7 @@ public class Administrator implements WorkingUser {
                 hospital.printAllNurses();
                 break;
             case 11:
-                hospital.printAllSecMen();
+                //hospital.printAllSecMen();
                 break;
             case 12:
                 hospital.printAllFacMan();
