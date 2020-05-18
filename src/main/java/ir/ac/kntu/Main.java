@@ -80,9 +80,6 @@ public class Main {
         return false;
     }
 }
-
 enum Menu {
     ADMIN, SEC, ORD, EXIT
 }
-
-

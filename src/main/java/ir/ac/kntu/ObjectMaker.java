@@ -170,4 +170,5 @@ public class ObjectMaker {
         String name = scanner.next();
         return new FacilityMan(id, name, scanner);
     }
+
 }

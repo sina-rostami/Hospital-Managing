@@ -8,12 +8,14 @@ public class Room {
     private Boolean isAvailable;
     private ArrayList<Patient> patients = new ArrayList<>();
     private int firstBedCost;
+    private ArrayList<RoomEquipment> roomEquipments = new ArrayList<>();
 
-    public Room(int id, int numberOfBeds, Boolean isAvailable, int firstBedCost) {
+    public Room(int id, int numberOfBeds, Boolean isAvailable, int firstBedCost, ArrayList<RoomEquipment> equips) {
         this.id = id;
         this.numberOfBeds = numberOfBeds;
         this.isAvailable = isAvailable;
         this.firstBedCost = firstBedCost;
+        this.roomEquipments = equips;
     }
 
     public Boolean editRoom(int numberOfBeds) {
@@ -64,6 +66,7 @@ public class Room {
         patients.remove(patient);
     }
 
+
     public double getRoomCost() {
         double coefficient = 1;
         if (this.numberOfBeds == 1) {
@@ -72,7 +75,20 @@ public class Room {
         for (int i = 1; i < this.numberOfBeds; i++) {
             coefficient -= 0.1;
         }
-        return firstBedCost * coefficient;
+        boolean[] equips = new boolean[3];
+        double equipCoe = 1;
+        if (roomEquipments.size() > 0) {
+            for (RoomEquipment r : roomEquipments) {
+                if (r.getId() == 001) {
+                    equipCoe += 0.1;
+                } else if (r.getId() == 002) {
+                    equipCoe += 0.15;
+                } else if (r.getId() == 003) {
+                    equipCoe += 0.05;
+                }
+            }
+        }
+        return (firstBedCost * coefficient) * equipCoe;
     }
 
     public String getPatientsIDs() {
@@ -85,11 +101,28 @@ public class Room {
         return s;
     }
 
+    public String equips() {
+        String equ = "";
+        if (roomEquipments.size() > 0) {
+            for (RoomEquipment r : roomEquipments) {
+                if (r.getId() == 001) {
+                    equ += "Refrigerator, ";
+                } else if (r.getId() == 002) {
+                    equ += "Tv, ";
+                } else if (r.getId() == 003) {
+                    equ += "A/C";
+                }
+            }
+        }
+        return equ;
+    }
+
     public String getRoomInfo() {
-        return "ID : " + id + "\n" +
-                "isAvailable : " + isAvailable + "\n" +
-                "Room Cost : " + getRoomCost() + "\n" +
-                "Number of Beds : " + numberOfBeds + "\n" +
-                "Patients : " + getPatientsIDs() + "\n";
+        return "ID : " + id +
+                "\nisAvailable : " + isAvailable +
+                "\nNumber of Beds : " + numberOfBeds +
+                "\nEquipments : " + equips() +
+                "\nRoom Cost : " + getRoomCost() +
+                "\nPatients : " + getPatientsIDs() + "\n";
     }
 }

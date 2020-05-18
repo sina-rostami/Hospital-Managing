@@ -1,5 +1,6 @@
 package ir.ac.kntu;
 
+import java.sql.Array;
 import java.util.*;
 
 public class Part {
@@ -69,8 +70,25 @@ public class Part {
         return id;
     }
 
-    public void addRoom(int numberOfBeds, int firstBedCost) {
-        rooms.add(new Room(roomIds, numberOfBeds, true, firstBedCost));
+    public void addRoom(int numberOfBeds, int firstBedCost, Scanner scanner) {
+        System.out.print("Have Refrigerator (0 , 1) ? ");
+        int[] equips = new int[3];
+        equips[0] = scanner.nextInt();
+        System.out.print("Have TV (0 , 1) ? ");
+        equips[1] = scanner.nextInt();
+        System.out.print("Have A/C (0 , 1) ? ");
+        equips[2] = scanner.nextInt();
+        ArrayList<RoomEquipment> equipments = new ArrayList<>();
+        if(equips[0] == 1) {
+            equipments.add(new RoomEquipment(001));
+        }
+        if(equips[1] == 1) {
+            equipments.add(new RoomEquipment(002));
+        }
+        if(equips[2] == 1) {
+            equipments.add(new RoomEquipment(003));
+        }
+        rooms.add(new Room(roomIds, numberOfBeds, true, firstBedCost, equipments));
         System.out.println("Room Successfully Added with ID : " + roomIds++);
     }
 

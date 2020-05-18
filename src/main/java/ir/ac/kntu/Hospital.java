@@ -246,8 +246,9 @@ public class Hospital {
         int partValue = scanner.nextInt();
         System.out.print("Enter number of Beds in the Room : ");
         int numberOfBeds = scanner.nextInt();
+
         if(partValue <= parts.size()) {
-            parts.get(partValue - 1).addRoom(numberOfBeds, firstBedCost);
+            parts.get(partValue - 1).addRoom(numberOfBeds, firstBedCost, scanner);
         }
     }
     public Room getRoom() {
@@ -318,9 +319,10 @@ public class Hospital {
         facilityMEN.remove(facilityMan);
         System.out.println("Fac man Successfully Removed!");
     }
-
-
     public void autoSet(int part) {
+        if(part == 4) {
+            return;
+        }
         ArrayList<Nurse> nurses1 = parts.get(part - 1).getNursesForShiftSet();
         ArrayList<Doctor> doctors1 = parts.get(part - 1).getDoctors();
         for (Doctor d : doctors1) {
